@@ -39,22 +39,24 @@ administration système, grâce à sa documentation très complète.
 A faire avant l'ouverture de la VM
 
 1. La commande pour trouver le hash de la vm:
-Linux: sha1sum sperrin42.vdi
-MacOs: shasum sperrin42.vdi
-Windows: certUtil sperrin42.vdi
+Linux: sha1sum cheminvers/sperrin42.vdi
 
 ### Mise en route
 
 1. importer la machine virtuelle dans VirtualBox.
+   machine -> open -> selection de la boite bleue
 2. Snapshot: dans VirtualBox cliquer sur la VM
   Snapshot->Take->"donner un nom"
-  faire la correction sur ce snapshot
 3. La démarrer (aucune interface graphique — serveur uniquement,
    `systemctl get-default` renvoie `multi-user.target` car pas d'interface graphique).
+   `sudo systemctl status apparmor` ou `sudo aa-status` verifie que apparmor est bien actif.
 4. Se connecter en SSH : `ssh -p 4242 <login>@<ip>`. pour voir l ip : ip addr
+dans virtualbox setting -> network -> expert -> port forwarding : ssh | TCP | ip de la vm (ip addr) | 4242 | "" | 4242
 
 ### Partitionnement chiffré (LVM + LUKS)
 Deux partitions chiffrées minimum. Le chiffrement est fait avec LUKS
+le lvm est une couche de gestion flexible des disques. permet de creer des volumes logiques redimentionnables. 
+Agrandir/reduire une partition sans formater
 (`cryptsetup`), LVM par-dessus pour la flexibilité (redimensionner,
 ajouter des volumes logiques sans re-partitionner le disque).
 Vérification :
@@ -63,18 +65,16 @@ Vérification :
 - `cat /etc/crypttab` → mapping des volumes chiffrés.
 
 ### Hostname
-Le hostname est `sperrin42`. Il se définit dans `/etc/hostname` (et
-l'association IP dans `/etc/hosts`), puis `hostnamectl set-hostname
-sperrin42` et redémarrage pour prise en compte.
+Le hostname est `sperrin42`. Il se définit dans `/etc/hostname` (et l'association IP dans `/etc/hosts`), puis `hostnamectl set-hostname sperrin42` et redémarrage pour prise en compte.
+voir les info: hostnamectl
 
 ### SSH (port 4242, root interdit)
 Configuré dans `/etc/ssh/sshd_config` :
 - `Port 4242` → le service n'écoute que sur ce port.
 - `PermitRootLogin no` → connexion root par SSH impossible.
 Vérification : `sudo systemctl status ssh` et `sudo ss -tlnp | grep 4242`.
-SSH = protocole chiffré pour administrer une machine à distance ; il
-remplace Telnet/rlogin qui passaient en clair.
-
+SSH = protocole chiffré pour administrer une machine à distance ; il remplace Telnet/rlogin qui passaient en clair.
+-`sudo ss -tlnp | grep sshd` pour verifier si seul 4242 est autorise.
 ### Pare-feu (UFW)
 - `sudo ufw status` → vérifier qu'il est actif au démarrage.
 - `sudo ufw allow 8080/tcp` puis `sudo ufw delete allow 8080/tcp` →
