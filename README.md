@@ -145,8 +145,5 @@ les terminaux via `wall`.
 
 ### Utilisation de l'IA
 L'IA a servi à comprendre certains concepts, rédiger ce README, et
-retrouver des commandes que je ré-oubliais (le `chage -m 2` par exemple 
-une bonne dizaine de fois, je pense). Aucun code ni aucune
-configuration n'a été généré par l'IA : chaque fichier a été écrit et
-compris par moi. (À part le README, écrit en grande partie avec l'aide de
+retrouver des commandes que je ré-oubliais (le `chage -m 2` par exemple une bonne dizaine de fois, je pense). Aucun code ni aucune configuration n'a été généré par l'IA : chaque fichier a été écrit et compris par moi. (À part le README, écrit en grande partie avec l'aide de
 l'IA puis relu et réécrit par moi — là par exemple, ou encore là, et enfin là.)
