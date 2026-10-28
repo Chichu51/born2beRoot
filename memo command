@@ -1,0 +1,151 @@
+*LVM*
+afficher l'organisation des peripheriques de stockage
+	lsblk
+affiche les volumes physiques
+	pvs
+affiche les groupes de volumes
+	vgs
+affiche les volumes logiques
+	lvs
+plus detaille que lvs	
+	lvdisplay
+Creer un nouveau volume (si espace libre)
+	sudo lvcreat -l 5G -n volumename debian-vg
+Formater les volumes
+	sudo mkfs.ext4 /dev/debian-vg/home
+Monter les volumes
+point de montage
+	sudo mkdir /home_new
+Monter
+	sudo mount /dev/debian-vg/home/home_new
+Verifier
+	df -h
+
+*SSH*
+verifier la configuration ssh
+	sudo nano /etc/ssh/sshd_config
+	ligne : Permit Root login no
+verifier le port
+	sudo ss -tlnp | grep 4242
+Etat du service
+	systemctl status ssh
+avoir le port ouvert
+	sudo ss -tlnp | grep 4242
+tester la connexion
+	ssh daly@127.0.0.1 -p 4242
+connaitre son adresse ip
+	ip a
+Verifie si la configuration ssh est valide
+	sudo ssh -t
+
+*PAQUETS*
+Mise a jour des listes des paquets disponibles
+	sudo apt update
+Instal un paquet
+	sudo apt install paquetname
+Verifie si un paquet est actif
+	systemctl is-enable nomdupaquet
+
+*UFW*
+Etat du pare-feu
+	sudo ufw status
+Activer le pare-feu
+	sudo ufw enable
+Authorisation du port 4242
+	sudo ufw allow 4242/tcp
+Suppression de l'authorisation
+	sudo ufw delete allow 4242/tcp
+Plus de details
+	sudo ufw verbose
+
+*USERS & GROUPS*
+Creer un user
+	sudo adduser newuser
+Creer user dans un group
+	sudo adduser newuser group
+Afficher les groupes present
+	getent group
+Creer un groupe	
+	sudo addgroup groupname
+Supprimer user
+	sudo deluser user
+Supprimer le dossier perso de user
+	sudo deluser user --remove-home user
+Verifier un user dans le groupe sudo
+	groups user
+Journaux collectes
+	sudo journalctl | grep sudo
+
+*MDP*
+Modification et configuration des regles de mots de passes
+	sudo nano /etc/security/pwquality.conf
+Affiche les informations publique des user du systeme
+	cat /etc/passwd
+Affiche les infos sensibles liees aux mdp
+	cat /etc/shadow
+Verifier regles de mdp
+	sudo chage -l daly
+Affiche et modifie les exigences de mdp
+	sudo nano /etc/pam.d/common_password
+Affiche et modifie les parametres par default
+	sudo nano /etc/sudoers
+
+
+*HOSTNAME*
+Changer le hostname
+	sudo hostnamectl set-hostname newname
+Verifier le hostname
+	hostname
+
+*APPARMOR*
+Verifier l'etat de apparmor sur Debian
+	sudo aa-status
+Afficher l'integralite de la reponse
+	sudo aa-status | less
+Verifier si apparmor est actif
+	systemctl status apparmor
+
+*MONITORING*
+Creer le script
+	sudo touch /usr/local/bin/monitoring.sh
+Accorder les droits
+	sudo chmod 755 /usr/local/bin/monitoring.sh
+Modifier le script
+	sudo nano /usr/local/bin/monitoring.sh
+Trouver le processus
+	ps aux | grep monitoring.sh
+Arreter le processus 
+	kill PID
+	sudo crontab -u root -e
+Utilisation de la memoire en Mo
+	free -m
+Affiche l'espace disque en Mo
+	df -m
+Prend la ligne contenant les donnees
+	NR==2
+taille totale : $2
+espace utilise : $3
+pourcentage : $5
+Execute top 1 fois
+	top -bn1
+Recupere la ligne Cpu
+	grep Cpu
+Recupere les valeurs user + systeme
+	awk
+Affiche les connexion reseau
+	ss
+Connecions etabli
+	ETAB
+Comptes les lignes
+	wc -l
+Information sur les processeurs 
+	/proc/cpuinfo
+Recupere l'identifiant physique
+	grep "physical id"
+
+
+
+
+
+
+
